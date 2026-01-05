@@ -1,0 +1,44 @@
+# Build directories
+target/
+target-x86/
+build/
+bin/
+lib/
+*.o
+*.a
+*.so
+*.dll
+*.exe
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+*.cmake
+
+# Visual Studio
+.vs/
+*.vcxproj.user
+*.sln.DotSettings.user
+*.VC.db
+*.VC.VC.opendb
+Debug/
+Release/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+*.log
+*.log0
+
+# Temporary files
+*.tmp
+*.temp
+__temp__/
