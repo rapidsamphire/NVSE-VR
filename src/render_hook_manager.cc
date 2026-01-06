@@ -16,6 +16,7 @@
 #include "nvse/PluginAPI.h"
 #include "nvse/SafeWrite.h"
 
+#include "nvse_vr/camera_manager.h"
 #include "nvse_vr/vr_manager.h"
 
 #pragma comment(lib, "psapi.lib")
@@ -533,7 +534,11 @@ static HRESULT STDMETHODCALLTYPE DrawIndexedPrimitiveHook(IDirect3DDevice9* devi
   device->SetViewport(&vr_viewport);
 
   D3DMATRIX left_view = view_matrix;
-  ApplyHmdPoseToViewMatrix(&left_view);
+  // Only apply HMD pose here if CameraManager is NOT handling it at scene graph level.
+  // Otherwise we get double-application of head position (especially height).
+  if (!CameraManager::GetInstance().IsInitialized()) {
+    ApplyHmdPoseToViewMatrix(&left_view);
+  }
   mgr.SetCurrentEyePass(RenderHookManager::EyePass::kLeft);
   mgr.ApplyEyeOffsetToViewMatrix(&left_view);
   RenderHookManager::original_set_transform_(device, D3DTS_VIEW, &left_view);
@@ -592,7 +597,9 @@ static HRESULT STDMETHODCALLTYPE DrawIndexedPrimitiveHook(IDirect3DDevice9* devi
   device->SetDepthStencilSurface(mgr.GetRightEyeDepth());
 
   D3DMATRIX right_view = view_matrix;
-  ApplyHmdPoseToViewMatrix(&right_view);
+  if (!CameraManager::GetInstance().IsInitialized()) {
+    ApplyHmdPoseToViewMatrix(&right_view);
+  }
   mgr.SetCurrentEyePass(RenderHookManager::EyePass::kRight);
   mgr.ApplyEyeOffsetToViewMatrix(&right_view);
   RenderHookManager::original_set_transform_(device, D3DTS_VIEW, &right_view);
@@ -700,7 +707,9 @@ static HRESULT STDMETHODCALLTYPE DrawPrimitiveHook(IDirect3DDevice9* device,
   device->SetViewport(&vr_viewport);
 
   D3DMATRIX left_view = view_matrix;
-  ApplyHmdPoseToViewMatrix(&left_view);
+  if (!CameraManager::GetInstance().IsInitialized()) {
+    ApplyHmdPoseToViewMatrix(&left_view);
+  }
   mgr.SetCurrentEyePass(RenderHookManager::EyePass::kLeft);
   mgr.ApplyEyeOffsetToViewMatrix(&left_view);
   RenderHookManager::original_set_transform_(device, D3DTS_VIEW, &left_view);
@@ -757,7 +766,9 @@ static HRESULT STDMETHODCALLTYPE DrawPrimitiveHook(IDirect3DDevice9* device,
   device->SetDepthStencilSurface(mgr.GetRightEyeDepth());
 
   D3DMATRIX right_view = view_matrix;
-  ApplyHmdPoseToViewMatrix(&right_view);
+  if (!CameraManager::GetInstance().IsInitialized()) {
+    ApplyHmdPoseToViewMatrix(&right_view);
+  }
   mgr.SetCurrentEyePass(RenderHookManager::EyePass::kRight);
   mgr.ApplyEyeOffsetToViewMatrix(&right_view);
   RenderHookManager::original_set_transform_(device, D3DTS_VIEW, &right_view);

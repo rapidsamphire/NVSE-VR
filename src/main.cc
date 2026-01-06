@@ -4,6 +4,7 @@
 
 #include "nvse/PluginAPI.h"
 
+#include "nvse_vr/camera_manager.h"
 #include "nvse_vr/render_hook_manager.h"
 #include "nvse_vr/vr_manager.h"
 
@@ -23,6 +24,8 @@ static void MessageHandler(NVSEMessagingInterface::Message* msg) {
       nvse_vr::RenderHookManager::GetInstance().Initialize();
       // VrManager will self-initialize when SteamVR/HMD becomes available.
       nvse_vr::VrManager::GetInstance().Initialize();
+      // Install camera hooks for VR head tracking.
+      nvse_vr::CameraManager::GetInstance().Initialize();
       break;
     }
     case NVSEMessagingInterface::kMessage_MainGameLoop: {

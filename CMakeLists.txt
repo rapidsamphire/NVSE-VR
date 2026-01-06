@@ -37,6 +37,7 @@ set(DETOURS_DIR "${CMAKE_SOURCE_DIR}/../deps/Detours" CACHE PATH "Path to Micros
 set(SOURCES
     src/vr_manager.cc
     src/render_hook_manager.cc
+    src/camera_manager.cc
     src/main.cc
 
     # Minimal NVSE/common runtime support (IDebugLog, ASSERT, etc.)
@@ -53,6 +54,7 @@ set(SOURCES
 set(HEADERS
     include/nvse_vr/vr_manager.h
     include/nvse_vr/render_hook_manager.h
+    include/nvse_vr/camera_manager.h
 )
 
 # Create DLL
